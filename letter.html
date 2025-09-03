@@ -1,168 +1,168 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Happy Birthday</title>
   <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
     body {
       margin: 0;
       padding: 0;
-      height: 100vh;
-      overflow: hidden;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-height: 100svh;
+      min-height: 100dvh;
       background: linear-gradient(135deg, #eab1c8, #ecf9ff, #fffadf);
-      flex-wrap: nowrap;
+      overflow: hidden;
     }
-    h1{
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-      margin-top: 20%;
-    }
-    .cake {
+
+    .main-container{
       position: relative;
-      z-index: 10; /* bánh nằm trên hiệu ứng */
+      z-index: 15;
+      width: min(900px, 92vw);
+      padding: 16px;
       text-align: center;
     }
-    .cake img {
-      width: 60%;
+
+    .cake img{
+      width: clamp(160px, 30vw, 260px);
+      height: auto;
       animation: bounce 2s infinite;
-      margin-top: -133px;
+      display: block;
+      margin: 0 auto;
     }
     @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-14px); }
     }
-    /* Nút */
-    .play-btn, .replay-btn {
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+
+    .play-btn, .replay-btn{
+      margin-top: 16px;
       padding: 12px 20px;
       font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 20px;
+      font-weight: 700;
+      border: 0;
+      border-radius: 22px;
       background: #ff4081;
-      color: white;
+      color: #fff;
       cursor: pointer;
-      z-index: 20;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: 0.3s;
+      box-shadow: 0 4px 10px rgba(0,0,0,.25);
+      transition: transform .2s, background .2s;
     }
-    .play-btn:hover, .replay-btn:hover {
-      background: #e91e63;
-      transform: translate(-50%, -50%) scale(1.1);
-    }
-    .replay-btn { display: none; }
-    
-    /* Ảnh chạy ngang */
-    .flying-container {
-      position: absolute;
-      top: 30%;
-      left: 0;
-      width: 100%;
-      height: 200px;
-      overflow: hidden;
-      z-index: 5; /* dưới bánh */
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
-    .flying-img {
-      position: absolute;
-      top: 0;
-      width: 120px;
-      height: auto;
-      animation: fly linear infinite;
-    }
-    @keyframes fly {
-      from { transform: translateX(100vw); }
-      to   { transform: translateX(-200px); }
-    }
+    .play-btn:hover, .replay-btn:hover{ transform: scale(1.05); background:#e91e63; }
+    .replay-btn{ display:none; }
 
-    /* Hiệu ứng trái tim rơi */
-    .heart {
-      position: absolute;
-      top: -50px;
-      width: 40px;
-      height: 40px;
-      pointer-events: none;
-      animation: fall linear forwards;
-      z-index: 5;
-    }
-    @keyframes fall {
-      to { transform: translateY(110vh); opacity: 0; }
-    }
-    audio { display: none; }
-    canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 5;
-    }
-
-    /* ==== CHỮ HAPPY BIRTHDAY ==== */
-    #birthday-text {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
+    /* Chữ HAPPY BIRTHDAY (ẩn ban đầu) */
+    #birthday-text{
+      margin-top: 18px;
       display: flex;
       gap: 8px;
-      font-size: 50px;
-      font-weight: bold;
+      justify-content: center;
+      font-size: clamp(22px, 6vw, 50px);
+      font-weight: 800;
       color: #ff4081;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-      z-index: 15;
+      text-shadow: 2px 2px 6px rgba(0,0,0,.3);
+      flex-wrap: wrap;
     }
-    #birthday-text span {
+    #birthday-text span{
       display: inline-block;
-      transform: translateY(100px);
       opacity: 0;
-      transition: transform 0.6s ease, opacity 0.6s ease;
+      transform: translateY(50px);
+      transition: transform .6s ease, opacity .6s ease;
     }
-    #birthday-text span.show {
-      transform: translateY(0);
+    #birthday-text span.show{
       opacity: 1;
+      transform: translateY(0);
     }
 
     /* Hello Kitty */
-    #kitty {
-      position: absolute;
-      bottom: 0;
+    #kitty{
+      position: fixed;
+      bottom: 10px;
       left: -100px;
       width: 60px;
       height: auto;
       z-index: 20;
-      transition: all 0.5s linear;
+      transition: left .6s linear;
+      pointer-events: none;
     }
+    .jump {
+      animation: kittyJump 0.6s ease;
+    }
+    @keyframes kittyJump {
+      0%   { transform: translateY(0); }
+      40%  { transform: translateY(-40px); }
+      100% { transform: translateY(0); }
+    }
+
+    .flying-container{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: 18%;
+      height: 200px;
+      overflow: hidden;
+      z-index: 6;
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;
+    }
+    .flying-img {
+      position: absolute;
+      top: 0;
+      right: -200px;
+      width: clamp(64px, 10vw, 120px);
+      height: auto;
+      animation: fly linear infinite;
+    }
+    @keyframes fly {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-120vw); }
+    }
+
+    .heart{
+      position: fixed;
+      top: -40px;
+      width: 28px; height: 28px;
+      pointer-events: none;
+      animation: fall linear forwards;
+      z-index: 5;
+    }
+    @keyframes fall{
+      to{ transform: translateY(110dvh); opacity: 0; }
+    }
+
+    canvas{
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    audio{ display:none; }
   </style>
 </head>
 <body>
-  <!-- Bánh sinh nhật -->
-  <div class="cake">
-    <img src="icon-banh-sinh-nhat-inkythuatso-14-11-38-33-removebg-preview.png" alt="cake">
-    <button id="playMusic" class="play-btn">Bấm Vô Đây Đi Người Đẹp</button>
-    <button id="replayMusic" class="replay-btn">🔄 Nghe Lại</button>
+  <div class="main-container">
+    <div class="cake">
+      <img src="icon-banh-sinh-nhat-inkythuatso-14-11-38-33-removebg-preview.png" alt="cake" />
+      <button id="playMusic" class="play-btn">Bấm Vô Đây Đi Người Đẹp</button>
+      <button id="replayMusic" class="replay-btn">🔄 Nghe Lại</button>
+    </div>
+
+    <div id="birthday-text" aria-label="HAPPY BIRTHDAY"></div>
   </div>
-  
-  <!-- Canvas pháo hoa -->
+
   <canvas id="fireworks"></canvas>
+  <img id="kitty" src="bối-rối.gif" alt="Hello Kitty bối rối" />
 
-  <!-- Nhạc nền -->
-  <audio id="bg-music">
-    <source src="tikgo.me-89475089.mp3" type="audio/mpeg">
-    Trình duyệt của bạn không hỗ trợ audio.
-  </audio>
-
-  <!-- Hello Kitty + chữ HAPPY BIRTHDAY -->
-  <img id="kitty" src="bối-rối.gif" alt="Hello Kitty bối rối">
-  <div id="birthday-text"></div>
-
-  <!-- Ảnh chạy ngang -->
   <div id="flying" class="flying-container">
     <img class="flying-img" src="8e803f52834e0810515f.jpg" style="top:0; animation-duration: 10s;">
     <img class="flying-img" src="0be81ef1-3a5a-4c6c-ab4b-6ebc2912a3d0.jpg" style="top:30px; animation-duration: 12s; animation-delay: 2s;">
@@ -172,131 +172,144 @@
     <img class="flying-img" src="07a487ff-6df0-44bc-b0f0-d324059ba66a.jpg" style="top:150px; animation-duration: 20s; animation-delay: 10s;">
   </div>
 
+  <audio id="bg-music">
+    <source src="tikgo.me-89475089.mp3" type="audio/mpeg" />
+    Trình duyệt của bạn không hỗ trợ audio.
+  </audio>
+
   <script>
-    // Trái tim rơi
-    function createHeart() {
+    function createHeart(){
       const heart = document.createElement("img");
       heart.src = "pngtree-red-paper-hearts-on-rope-png-image_3165633-removebg-preview.png";
       heart.className = "heart";
       heart.style.left = Math.random() * window.innerWidth + "px";
       heart.style.animationDuration = (3 + Math.random() * 2) + "s";
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 5000);
+      setTimeout(()=> heart.remove(), 5000);
     }
-    setInterval(createHeart, 400);
+    setInterval(createHeart, 450);
 
-    // Nhạc + nút + ảnh bay
     const audio = document.getElementById("bg-music");
-    audio.volume = 1.0;
     const playBtn = document.getElementById("playMusic");
     const replayBtn = document.getElementById("replayMusic");
     const flying = document.getElementById("flying");
+    audio.volume = 1.0;
 
     playBtn.addEventListener("click", () => {
       audio.currentTime = 0;
       audio.play();
-      playBtn.style.display = "none"; 
-      flying.style.opacity = 1; // hiện ảnh bay
+      playBtn.style.display = "none";
+      flying.style.opacity = 1;
       startFireworks();
-      startBirthdayText();
+      startBirthdayText(true);
     });
+
     replayBtn.addEventListener("click", () => {
       audio.currentTime = 0;
       audio.play();
       replayBtn.style.display = "none";
-      flying.style.opacity = 1; // hiện lại ảnh bay
+      flying.style.opacity = 1;
       startFireworks();
-      startBirthdayText();
-    });
-    audio.addEventListener("ended", () => {
-      replayBtn.style.display = "block";
-      flying.style.opacity = 0; // ẩn ảnh bay
+      startBirthdayText(true);
     });
 
-    // ---- PHÁO HOA ----
+    audio.addEventListener("ended", () => {
+      replayBtn.style.display = "inline-block";
+      flying.style.opacity = 0;
+    });
+
     const canvas = document.getElementById("fireworks");
     const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    class Particle {
-      constructor(x, y, color) {
-        this.x = x;
-        this.y = y;
+    function sizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    sizeCanvas();
+    window.addEventListener("resize", sizeCanvas);
+
+    class Particle{
+      constructor(x, y, color){
+        this.x = x; this.y = y;
         this.color = color;
-        this.radius = Math.random() * 3 + 2;
-        this.speed = Math.random() * 5 + 3;
-        this.angle = Math.random() * Math.PI * 2;
-        this.vx = Math.cos(this.angle) * this.speed;
-        this.vy = Math.sin(this.angle) * this.speed;
+        this.radius = Math.random()*3 + 2;
+        this.speed  = Math.random()*5 + 3;
+        this.angle  = Math.random()*Math.PI*2;
+        this.vx = Math.cos(this.angle)*this.speed;
+        this.vy = Math.sin(this.angle)*this.speed;
         this.alpha = 1;
-        this.decay = Math.random() * 0.02 + 0.01;
+        this.decay = Math.random()*0.02 + 0.01;
       }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.alpha -= this.decay;
-      }
-      draw() {
+      update(){ this.x+=this.vx; this.y+=this.vy; this.alpha -= this.decay; }
+      draw(){
         ctx.save();
         ctx.globalAlpha = this.alpha;
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
         ctx.fill();
         ctx.restore();
       }
     }
     let particles = [];
-    function createExplosion(x, y) {
-      const colors = ["#ff4d4d", "#ffd633", "#66ff66", "#33ccff", "#ff99ff"];
-      for (let i = 0; i < 80; i++) {
-        particles.push(new Particle(x, y, colors[Math.floor(Math.random() * colors.length)]));
+    function createExplosion(x,y){
+      const colors = ["#ff4d4d","#ffd633","#66ff66","#33ccff","#ff99ff"];
+      for(let i=0;i<80;i++){
+        particles.push(new Particle(x,y, colors[Math.floor(Math.random()*colors.length)]));
       }
     }
-    function animateFireworks() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p, index) => {
-        p.update();
-        p.draw();
-        if (p.alpha <= 0) particles.splice(index, 1);
-      });
+    function animateFireworks(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for (let i=particles.length-1;i>=0;i--){
+        const p = particles[i];
+        p.update(); p.draw();
+        if (p.alpha<=0) particles.splice(i,1);
+      }
       requestAnimationFrame(animateFireworks);
     }
-    function startFireworks() {
+    function startFireworks(){
       createExplosion(80, 100);
-      createExplosion(canvas.width - 80, 100);
+      createExplosion(canvas.width-80, 100);
       animateFireworks();
     }
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
 
-    // ==== HIỆU ỨNG CHỮ + HELLO KITTY ====
-    function startBirthdayText() {
+    const textContainer = document.getElementById("birthday-text");
+    const kitty = document.getElementById("kitty");
+
+    window.addEventListener("DOMContentLoaded", () => startBirthdayText(false));
+
+    function startBirthdayText(animated){
       const text = "HAPPY BIRTHDAY";
-      const container = document.getElementById("birthday-text");
-      const kitty = document.getElementById("kitty");
-      container.innerHTML = "";
+      textContainer.innerHTML = "";
 
-      text.split("").forEach((char) => {
+      text.split("").forEach(ch => {
         const span = document.createElement("span");
-        span.textContent = char;
-        container.appendChild(span);
+        span.textContent = ch;
+        textContainer.appendChild(span);
       });
 
-      const spans = container.querySelectorAll("span");
+      const spans = [...textContainer.querySelectorAll("span")];
+
+      if (!animated){
+        kitty.style.left = "-100px";
+        return;
+      }
+
       spans.forEach((span, i) => {
         setTimeout(() => {
           const rect = span.getBoundingClientRect();
-          kitty.style.left = rect.left - 10 + "px";
+          kitty.style.left = (rect.left - 10) + "px";
+
+          kitty.classList.add("jump");
+          setTimeout(() => kitty.classList.remove("jump"), 600);
+
           span.classList.add("show");
-          if (i === spans.length - 1) {
-            setTimeout(() => {
-              kitty.style.left = window.innerWidth + 200 + "px"; 
-            }, 1200);
+
+          if (i === spans.length - 1){
+            setTimeout(()=> {
+              kitty.style.left = window.innerWidth + 200 + "px";
+            }, 1000);
           }
-        }, i * 800);
+        }, i * 1200);
       });
     }
   </script>
