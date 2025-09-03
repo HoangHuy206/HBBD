@@ -275,3 +275,44 @@ window.addEventListener("load", checkOrientation);
 document.getElementById("goToLetterBtn").addEventListener("click", () => {
   window.location.href = "letter.html";
 });
+// 🎵 Điều khiển âm nhạc
+const bgMusic = document.getElementById("bgMusic");
+const musicToggle = document.getElementById("musicToggle");
+
+// ✅ Tự phát nhạc khi mới vào trang
+window.addEventListener("load", () => {
+  bgMusic.play().catch(err => {
+    console.log("Autoplay bị chặn, cần người dùng tương tác:", err);
+  });
+});
+
+// ✅ Nút tắt/bật nhạc
+musicToggle.addEventListener("click", () => {
+  if (bgMusic.paused) {
+    bgMusic.play();
+    musicToggle.textContent = "🎵";
+  } else {
+    bgMusic.pause();
+    musicToggle.textContent = "🔇";
+  }
+});
+
+// ✅ Giữ overlay khi chưa xoay ngang
+function checkOrientation() {
+  if (window.innerHeight > window.innerWidth) {
+    document.getElementById("rotateMsg").style.display = "flex";
+    canvas.style.display = "none";
+  } else {
+    document.getElementById("rotateMsg").style.display = "none";
+    canvas.style.display = "block";
+  }
+}
+window.addEventListener("resize", checkOrientation);
+window.addEventListener("load", checkOrientation);
+
+// ✅ Khi bấm nút -> dừng nhạc + chuyển trang
+document.getElementById("goToLetterBtn").addEventListener("click", () => {
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
+  window.location.href = "letter.html";
+});

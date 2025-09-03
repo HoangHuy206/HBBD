@@ -75,3 +75,23 @@ canvas {
   background: #e91e63;
   transform: translateX(-50%) scale(1.1);
 }
+
+/* ===== Nút bật/tắt nhạc ===== */
+#musicToggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 22px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  cursor: pointer;
+  z-index: 10001;
+  transition: 0.3s;
+}
+#musicToggle:hover {
+  background: rgba(0,0,0,0.8);
+  transform: scale(1.1);
+}
