@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>HAPPY</title>
   <link rel="stylesheet" href="./style/style.css">
+  <link rel="stylesheet" href="./style/letter.css">
 </head>
 <body>
-<div id="rotateMsg" class="landscape-warning">
-  <div class="rotate-icon">↻</div>
-  <div>Vui lòng xoay ngang màn hình để tiếp tục 😗😗</div>
-</div>
+  <!-- Overlay bắt xoay ngang -->
+  <div id="rotateMsg" class="landscape-warning">
+    <div class="loader"></div>
+    <p>Vui lòng xoay ngang màn hình để tiếp tục và mở volume to lên xíu </p>
+  </div>
 
-
+  <!-- Canvas hiệu ứng chữ -->
   <canvas id="matrixCanvas"></canvas>
+
+  <!-- Nút chuyển sang nhóm 2 -->
+  <button id="goToLetterBtn" style="display:none;">👉 Bấm để tiếp tục</button>
+
   <script src="./style/script.js"></script>
+  <script src="./style/letter.js"></script>
 </body>
 </html>

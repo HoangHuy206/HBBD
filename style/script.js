@@ -57,7 +57,6 @@ function loadStickers() {
     img.src = name;
     stickerImages.push(img);
   }
-
   for (let i = 0; i < 10; i++) {
     const image = stickerImages[i % stickerImages.length];
     stickers.push(new Sticker(image));
@@ -73,15 +72,12 @@ class Sticker {
     this.vy = (Math.random() - 0.5) * 1.5;
     this.size = 70 + Math.random() * 20;
   }
-
   update() {
     this.x += this.vx;
     this.y += this.vy;
-
     if (this.x < -50 || this.x > W + 50) this.vx *= -1;
     if (this.y < -50 || this.y > H + 50) this.vy *= -1;
   }
-
   draw(ctx) {
     ctx.drawImage(this.image, this.x, this.y, this.size, this.size);
   }
@@ -132,7 +128,6 @@ class Dot {
     this.vy = 0;
     this.size = 3;
   }
-
   update() {
     if (state === "forming") {
       const dx = this.targetX - this.x;
@@ -149,7 +144,6 @@ class Dot {
       this.vy *= 1.05;
     }
   }
-
   draw(ctx) {
     if (texts[currentTextIndex] === "BUI LINH TRANG") {
       ctx.fillStyle = "red";
@@ -237,8 +231,11 @@ function drawMatrixRain() {
   } else if (state === "exploding") {
     if (now - explosionStartTime > EXPLOSION_TIME) {
       currentTextIndex++;
-      if (currentTextIndex >= texts.length) return;
-
+      if (currentTextIndex >= texts.length) {
+        // ✅ Khi đã chạy hết "BUI LINH TRANG" -> hiện nút
+        document.getElementById("goToLetterBtn").style.display = "block";
+        return;
+      }
       currentCharIndex = 0;
       const nextText = texts[currentTextIndex];
       currentDisplayTime = BASE_DISPLAY_TIME + (nextText.length > 5 ? 3000 : 0);
@@ -264,15 +261,17 @@ setInterval(drawMatrixRain, 50);
 
 function checkOrientation() {
   if (window.innerHeight > window.innerWidth) {
-    // Portrait → hiện overlay
     document.getElementById("rotateMsg").style.display = "flex";
     canvas.style.display = "none";
   } else {
-    // Landscape → ẩn overlay
     document.getElementById("rotateMsg").style.display = "none";
     canvas.style.display = "block";
   }
 }
-
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("load", checkOrientation);
+
+// ✅ Chuyển sang letter.html khi bấm nút
+document.getElementById("goToLetterBtn").addEventListener("click", () => {
+  window.location.href = "letter.html";
+});

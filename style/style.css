@@ -24,10 +24,8 @@ canvas {
   text-align: center;
   justify-content: center;
   align-items: center;
-  flex-direction: column; /* để icon và chữ theo cột */
+  flex-direction: column;
   z-index: 9999;
-
-  /* Nền gradient đổi màu liên tục */
   background: linear-gradient(270deg, #ff4d4d, #4d79ff, #4dff88, #ffdb4d);
   background-size: 600% 600%;
   animation: gradientBG 10s ease infinite;
@@ -44,22 +42,36 @@ canvas {
   margin-bottom: 20px;
 }
 
-/* Icon ↻ xoay */
-.rotate-icon {
-  font-size: 50px;
-  margin-bottom: 15px;
-  display: inline-block;
-  animation: spin 1.5s linear infinite;
-}
-
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* Hiệu ứng nền gradient */
 @keyframes gradientBG {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* ===== Nút chuyển trang ===== */
+#goToLetterBtn {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  background: #ff4081;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 10000;
+  transition: 0.3s;
+}
+#goToLetterBtn:hover {
+  background: #e91e63;
+  transform: translateX(-50%) scale(1.1);
 }

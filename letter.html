@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #eab1c8, #ecf9ff, #fffadf);
+      flex-wrap: nowrap;
+    }
+    h1{
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      margin-top: 20%;
+    }
+    .cake {
+      position: relative;
+      z-index: 10; /* bánh nằm trên hiệu ứng */
+      text-align: center;
+    }
+    .cake img {
+      width: 60%;
+      animation: bounce 2s infinite;
+      margin-top: -133px;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    /* Nút */
+    .play-btn, .replay-btn {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      background: #ff4081;
+      color: white;
+      cursor: pointer;
+      z-index: 20;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+    .play-btn:hover, .replay-btn:hover {
+      background: #e91e63;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    .replay-btn { display: none; }
+    
+    /* Ảnh chạy ngang */
+    .flying-container {
+      position: absolute;
+      top: 30%;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      z-index: 5; /* dưới bánh */
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .flying-img {
+      position: absolute;
+      top: 0;
+      width: 120px;
+      height: auto;
+      animation: fly linear infinite;
+    }
+    @keyframes fly {
+      from { transform: translateX(100vw); }
+      to   { transform: translateX(-200px); }
+    }
+
+    /* Hiệu ứng trái tim rơi */
+    .heart {
+      position: absolute;
+      top: -50px;
+      width: 40px;
+      height: 40px;
+      pointer-events: none;
+      animation: fall linear forwards;
+      z-index: 5;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh); opacity: 0; }
+    }
+    audio { display: none; }
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* ==== CHỮ HAPPY BIRTHDAY ==== */
+    #birthday-text {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      font-size: 50px;
+      font-weight: bold;
+      color: #ff4081;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+      z-index: 15;
+    }
+    #birthday-text span {
+      display: inline-block;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+    #birthday-text span.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Hello Kitty */
+    #kitty {
+      position: absolute;
+      bottom: 0;
+      left: -100px;
+      width: 60px;
+      height: auto;
+      z-index: 20;
+      transition: all 0.5s linear;
+    }
+  </style>
+</head>
+<body>
+  <!-- Bánh sinh nhật -->
+  <div class="cake">
+    <img src="icon-banh-sinh-nhat-inkythuatso-14-11-38-33-removebg-preview.png" alt="cake">
+    <button id="playMusic" class="play-btn">Bấm Vô Đây Đi Người Đẹp</button>
+    <button id="replayMusic" class="replay-btn">🔄 Nghe Lại</button>
+  </div>
+  
+  <!-- Canvas pháo hoa -->
+  <canvas id="fireworks"></canvas>
+
+  <!-- Nhạc nền -->
+  <audio id="bg-music">
+    <source src="tikgo.me-89475089.mp3" type="audio/mpeg">
+    Trình duyệt của bạn không hỗ trợ audio.
+  </audio>
+
+  <!-- Hello Kitty + chữ HAPPY BIRTHDAY -->
+  <img id="kitty" src="bối-rối.gif" alt="Hello Kitty bối rối">
+  <div id="birthday-text"></div>
+
+  <!-- Ảnh chạy ngang -->
+  <div id="flying" class="flying-container">
+    <img class="flying-img" src="8e803f52834e0810515f.jpg" style="top:0; animation-duration: 10s;">
+    <img class="flying-img" src="0be81ef1-3a5a-4c6c-ab4b-6ebc2912a3d0.jpg" style="top:30px; animation-duration: 12s; animation-delay: 2s;">
+    <img class="flying-img" src="bebde06c5c70d72e8e61.jpg" style="top:60px; animation-duration: 14s; animation-delay: 4s;">
+    <img class="flying-img" src="c8e8d8396425ef7bb634.jpg" style="top:90px; animation-duration: 16s; animation-delay: 6s;">
+    <img class="flying-img" src="e70820da9cc617984ed7.jpg" style="top:120px; animation-duration: 18s; animation-delay: 8s;">
+    <img class="flying-img" src="07a487ff-6df0-44bc-b0f0-d324059ba66a.jpg" style="top:150px; animation-duration: 20s; animation-delay: 10s;">
+  </div>
+
+  <script>
+    // Trái tim rơi
+    function createHeart() {
+      const heart = document.createElement("img");
+      heart.src = "pngtree-red-paper-hearts-on-rope-png-image_3165633-removebg-preview.png";
+      heart.className = "heart";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 400);
+
+    // Nhạc + nút + ảnh bay
+    const audio = document.getElementById("bg-music");
+    audio.volume = 1.0;
+    const playBtn = document.getElementById("playMusic");
+    const replayBtn = document.getElementById("replayMusic");
+    const flying = document.getElementById("flying");
+
+    playBtn.addEventListener("click", () => {
+      audio.currentTime = 0;
+      audio.play();
+      playBtn.style.display = "none"; 
+      flying.style.opacity = 1; // hiện ảnh bay
+      startFireworks();
+      startBirthdayText();
+    });
+    replayBtn.addEventListener("click", () => {
+      audio.currentTime = 0;
+      audio.play();
+      replayBtn.style.display = "none";
+      flying.style.opacity = 1; // hiện lại ảnh bay
+      startFireworks();
+      startBirthdayText();
+    });
+    audio.addEventListener("ended", () => {
+      replayBtn.style.display = "block";
+      flying.style.opacity = 0; // ẩn ảnh bay
+    });
+
+    // ---- PHÁO HOA ----
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.radius = Math.random() * 3 + 2;
+        this.speed = Math.random() * 5 + 3;
+        this.angle = Math.random() * Math.PI * 2;
+        this.vx = Math.cos(this.angle) * this.speed;
+        this.vy = Math.sin(this.angle) * this.speed;
+        this.alpha = 1;
+        this.decay = Math.random() * 0.02 + 0.01;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.alpha -= this.decay;
+      }
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+    let particles = [];
+    function createExplosion(x, y) {
+      const colors = ["#ff4d4d", "#ffd633", "#66ff66", "#33ccff", "#ff99ff"];
+      for (let i = 0; i < 80; i++) {
+        particles.push(new Particle(x, y, colors[Math.floor(Math.random() * colors.length)]));
+      }
+    }
+    function animateFireworks() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p, index) => {
+        p.update();
+        p.draw();
+        if (p.alpha <= 0) particles.splice(index, 1);
+      });
+      requestAnimationFrame(animateFireworks);
+    }
+    function startFireworks() {
+      createExplosion(80, 100);
+      createExplosion(canvas.width - 80, 100);
+      animateFireworks();
+    }
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // ==== HIỆU ỨNG CHỮ + HELLO KITTY ====
+    function startBirthdayText() {
+      const text = "HAPPY BIRTHDAY";
+      const container = document.getElementById("birthday-text");
+      const kitty = document.getElementById("kitty");
+      container.innerHTML = "";
+
+      text.split("").forEach((char) => {
+        const span = document.createElement("span");
+        span.textContent = char;
+        container.appendChild(span);
+      });
+
+      const spans = container.querySelectorAll("span");
+      spans.forEach((span, i) => {
+        setTimeout(() => {
+          const rect = span.getBoundingClientRect();
+          kitty.style.left = rect.left - 10 + "px";
+          span.classList.add("show");
+          if (i === spans.length - 1) {
+            setTimeout(() => {
+              kitty.style.left = window.innerWidth + 200 + "px"; 
+            }, 1200);
+          }
+        }, i * 800);
+      });
+    }
+  </script>
+</body>
+</html>
