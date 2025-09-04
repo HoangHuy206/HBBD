@@ -19,7 +19,7 @@ const texts = [
   "2",
   "1",
   "🎂",
-  "4.9.2008",
+  "5.9.2008",
   "HAPPY BIRTHDAY",
   "BUI LINH TRANG"
 ];
